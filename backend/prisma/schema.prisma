@@ -1,0 +1,260 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User Model
+model User {
+  id                String    @id @default(uuid())
+  name              String
+  email             String    @unique
+  password          String
+  role              UserRole  @default(USER)
+  isEmailVerified   Boolean   @default(false)
+  emailVerifyToken  String?
+  passwordResetToken String?
+  passwordResetExpires DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  // Relations
+  reviews           Review[]
+  savedProducts     SavedProduct[]
+  comparisons       Comparison[]
+
+  @@index([email])
+  @@map("users")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+// Category Model
+model Category {
+  id          String      @id @default(uuid())
+  name        String      @unique
+  slug        String      @unique
+  description String?
+  parentId    String?
+  parent      Category?   @relation("CategoryHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children    Category[]  @relation("CategoryHierarchy")
+  image       String?
+  isActive    Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  // Relations
+  products    Product[]
+
+  @@index([slug])
+  @@index([parentId])
+  @@map("categories")
+}
+
+// Product Model
+model Product {
+  id              String    @id @default(uuid())
+  asin            String    @unique
+  title           String
+  description     String?   @db.Text
+  brand           String?
+  categoryId      String
+  category        Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  
+  // Pricing
+  price           Float
+  oldPrice        Float?
+  currency        String    @default("USD")
+  
+  // Images
+  primaryImage    String
+  images          String[]  @default([])
+  
+  // Ratings & Reviews
+  rating          Float?    @default(0)
+  reviewCount     Int       @default(0)
+  
+  // Features
+  features        Json?
+  specifications  Json?
+  pros            String[]  @default([])
+  cons            String[]  @default([])
+  
+  // Affiliate
+  affiliateUrl    String
+  
+  // Deal Info
+  isDeal          Boolean   @default(false)
+  dealExpiry      DateTime?
+  discountPercent Int?
+  
+  // Product Status
+  isNewLaunch     Boolean   @default(false)
+  launchDate      DateTime?
+  isActive        Boolean   @default(true)
+  inStock         Boolean   @default(true)
+  
+  // SEO
+  metaTitle       String?
+  metaDescription String?
+  
+  // Timestamps
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  lastSyncedAt    DateTime?
+
+  // Relations
+  reviews         Review[]
+  deals           Deal[]
+  savedBy         SavedProduct[]
+  comparisons     ComparisonProduct[]
+
+  @@index([asin])
+  @@index([categoryId])
+  @@index([isDeal])
+  @@index([isNewLaunch])
+  @@index([price])
+  @@index([rating])
+  @@index([createdAt])
+  @@fulltext([title, description])
+  @@map("products")
+}
+
+// Deal Model
+model Deal {
+  id              String    @id @default(uuid())
+  productId       String
+  product         Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  title           String
+  description     String?
+  discountPercent Int
+  startDate       DateTime
+  endDate         DateTime
+  isActive        Boolean   @default(true)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([productId])
+  @@index([isActive])
+  @@index([endDate])
+  @@map("deals")
+}
+
+// Review Model
+model Review {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId   String
+  product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  rating      Int       // 1-5
+  title       String?
+  comment     String    @db.Text
+  isVerified  Boolean   @default(false)
+  helpfulCount Int      @default(0)
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([userId, productId])
+  @@index([productId])
+  @@index([userId])
+  @@index([rating])
+  @@map("reviews")
+}
+
+// Saved Product Model (User Wishlist)
+model SavedProduct {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId   String
+  product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime  @default(now())
+
+  @@unique([userId, productId])
+  @@index([userId])
+  @@index([productId])
+  @@map("saved_products")
+}
+
+// Comparison Model
+model Comparison {
+  id          String              @id @default(uuid())
+  userId      String?
+  user        User?               @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  name        String?
+  isPublic    Boolean             @default(false)
+  
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  // Relations
+  products    ComparisonProduct[]
+
+  @@index([userId])
+  @@map("comparisons")
+}
+
+// Comparison Product Junction
+model ComparisonProduct {
+  id            String     @id @default(uuid())
+  comparisonId  String
+  comparison    Comparison @relation(fields: [comparisonId], references: [id], onDelete: Cascade)
+  productId     String
+  product       Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  addedAt       DateTime   @default(now())
+
+  @@unique([comparisonId, productId])
+  @@index([comparisonId])
+  @@index([productId])
+  @@map("comparison_products")
+}
+
+// Sync Log Model
+model SyncLog {
+  id                String    @id @default(uuid())
+  jobType           String    // 'PRODUCTS', 'DEALS', 'PRICES', 'CLEANUP'
+  status            SyncStatus
+  message           String?   @db.Text
+  
+  productsCreated   Int       @default(0)
+  productsUpdated   Int       @default(0)
+  productsFailed    Int       @default(0)
+  
+  dealsCreated      Int       @default(0)
+  dealsExpired      Int       @default(0)
+  
+  duration          Int?      // milliseconds
+  
+  startedAt         DateTime  @default(now())
+  completedAt       DateTime?
+
+  @@index([jobType])
+  @@index([status])
+  @@index([startedAt])
+  @@map("sync_logs")
+}
+
+enum SyncStatus {
+  PENDING
+  RUNNING
+  SUCCESS
+  FAILED
+  PARTIAL
+}
