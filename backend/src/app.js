@@ -10,6 +10,9 @@ import { apiLimiter } from './middlewares/rateLimiter.middleware.js';
 import { sanitizeInput } from './middlewares/validator.middleware.js';
 import authRoutes from './routes/auth.routes.js';
 import productRoutes from './routes/product.routes.js';
+import dealRoutes from './routes/deal.routes.js';
+import reviewRoutes from './routes/review.routes.js';
+import userRoutes from './routes/user.routes.js';
 import logger from './utils/logger.js';
 
 const app = express();
@@ -66,6 +69,9 @@ app.get('/health', (req, res) => {
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/deals', dealRoutes);
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/user', userRoutes);
 
 // 404 handler
 app.use(notFound);
