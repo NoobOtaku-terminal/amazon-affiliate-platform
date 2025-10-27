@@ -3,13 +3,16 @@
 ## Local Development Setup
 
 ### 1. Prerequisites
+
 Ensure you have the following installed:
+
 - Node.js >= 18.0.0
 - PostgreSQL >= 14
 - Redis (optional, but recommended)
 - Git
 
 ### 2. Clone and Setup
+
 ```bash
 # Clone repository
 git clone https://github.com/NoobOtaku-terminal/amazon-affiliate-platform.git
@@ -25,6 +28,7 @@ npm install
 ```
 
 ### 3. Database Setup
+
 ```bash
 # Create PostgreSQL database
 createdb affiliate_db
@@ -51,6 +55,7 @@ npm run seed
 ### 4. Configure Environment Variables
 
 **Backend (.env)**
+
 ```env
 NODE_ENV=development
 PORT=5000
@@ -72,11 +77,13 @@ AMAZON_PARTNER_TAG=your_affiliate_tag
 ```
 
 **Frontend (.env)**
+
 ```env
 REACT_APP_API_URL=http://localhost:5000/api
 ```
 
 ### 5. Start Development Servers
+
 ```bash
 # Terminal 1 - Backend
 cd backend
@@ -88,6 +95,7 @@ npm start
 ```
 
 Access:
+
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:5000
 - API Health: http://localhost:5000/health
@@ -97,6 +105,7 @@ Access:
 ## Docker Development Setup
 
 ### Quick Start
+
 ```bash
 # Copy environment files
 cp .env.example .env
@@ -117,6 +126,7 @@ docker-compose down
 ```
 
 ### Run Migrations in Docker
+
 ```bash
 # Access backend container
 docker exec -it affiliate_backend sh
@@ -138,6 +148,7 @@ exit
 ### Option 1: AWS (Recommended)
 
 #### Architecture
+
 - **Frontend**: AWS S3 + CloudFront or AWS Amplify
 - **Backend**: AWS ECS/Fargate or EC2
 - **Database**: AWS RDS (PostgreSQL)
@@ -147,6 +158,7 @@ exit
 #### Steps
 
 1. **Setup RDS PostgreSQL**
+
 ```bash
 # Create RDS instance
 aws rds create-db-instance \
@@ -159,6 +171,7 @@ aws rds create-db-instance \
 ```
 
 2. **Build and Push Docker Images**
+
 ```bash
 # Login to ECR
 aws ecr get-login-password --region us-east-1 | \
@@ -173,6 +186,7 @@ docker push <account-id>.dkr.ecr.us-east-1.amazonaws.com/affiliate-backend:lates
 ```
 
 3. **Deploy to ECS**
+
 - Create ECS cluster
 - Create task definition
 - Create service
@@ -180,6 +194,7 @@ docker push <account-id>.dkr.ecr.us-east-1.amazonaws.com/affiliate-backend:lates
 - Setup auto-scaling
 
 4. **Frontend Deployment**
+
 ```bash
 # Build frontend
 cd frontend
@@ -201,12 +216,14 @@ aws cloudfront create-invalidation \
 #### Backend on Render
 
 1. **Connect GitHub Repository**
+
    - Go to https://render.com
    - New > Web Service
    - Connect GitHub repo
    - Select `backend` as root directory
 
 2. **Configure Service**
+
 ```yaml
 Name: affiliate-backend
 Environment: Node
@@ -215,7 +232,7 @@ Start Command: npm run start:prod
 ```
 
 3. **Environment Variables**
-Add all variables from `.env.example`
+   Add all variables from `.env.example`
 
 4. **Add PostgreSQL Database**
    - Create new PostgreSQL database on Render
@@ -224,11 +241,13 @@ Add all variables from `.env.example`
 #### Frontend on Vercel
 
 1. **Import Project**
+
    - Go to https://vercel.com
    - Import Git Repository
    - Select root directory: `frontend`
 
 2. **Configure Build**
+
 ```
 Framework Preset: Create React App
 Build Command: npm run build
@@ -236,6 +255,7 @@ Output Directory: build
 ```
 
 3. **Environment Variables**
+
 ```
 REACT_APP_API_URL=https://your-backend-url.onrender.com/api
 ```
@@ -245,6 +265,7 @@ REACT_APP_API_URL=https://your-backend-url.onrender.com/api
 ### Option 3: DigitalOcean / VPS
 
 #### 1. Server Setup
+
 ```bash
 # SSH into server
 ssh root@your-server-ip
@@ -271,6 +292,7 @@ sh get-docker.sh
 ```
 
 #### 2. Clone and Setup
+
 ```bash
 # Clone repository
 git clone https://github.com/NoobOtaku-terminal/amazon-affiliate-platform.git
@@ -289,6 +311,7 @@ npm run build
 ```
 
 #### 3. Configure Nginx
+
 ```nginx
 # /etc/nginx/sites-available/affiliate
 server {
@@ -321,6 +344,7 @@ systemctl reload nginx
 ```
 
 #### 4. Start Backend with PM2
+
 ```bash
 cd backend
 pm2 start src/server.js --name affiliate-backend
@@ -329,6 +353,7 @@ pm2 startup
 ```
 
 #### 5. SSL with Let's Encrypt
+
 ```bash
 apt install -y certbot python3-certbot-nginx
 certbot --nginx -d your-domain.com
@@ -339,6 +364,7 @@ certbot --nginx -d your-domain.com
 ## Environment-Specific Configurations
 
 ### Development
+
 ```env
 NODE_ENV=development
 LOG_LEVEL=debug
@@ -346,6 +372,7 @@ CORS_ORIGIN=http://localhost:3000
 ```
 
 ### Staging
+
 ```env
 NODE_ENV=staging
 LOG_LEVEL=info
@@ -353,6 +380,7 @@ CORS_ORIGIN=https://staging.your-domain.com
 ```
 
 ### Production
+
 ```env
 NODE_ENV=production
 LOG_LEVEL=warn
@@ -364,6 +392,7 @@ CORS_ORIGIN=https://your-domain.com
 ## Database Migrations
 
 ### Development
+
 ```bash
 # Create migration
 npx prisma migrate dev --name description
@@ -373,6 +402,7 @@ npx prisma migrate reset
 ```
 
 ### Production
+
 ```bash
 # Apply migrations
 npx prisma migrate deploy
@@ -385,6 +415,7 @@ npx prisma migrate deploy
 ## Monitoring & Logging
 
 ### PM2 Monitoring
+
 ```bash
 # View logs
 pm2 logs affiliate-backend
@@ -397,7 +428,9 @@ pm2 status
 ```
 
 ### Application Logs
+
 Logs are stored in `backend/logs/`:
+
 - `combined-YYYY-MM-DD.log` - All logs
 - `error-YYYY-MM-DD.log` - Error logs only
 
@@ -406,6 +439,7 @@ Logs are stored in `backend/logs/`:
 ## Backup Strategy
 
 ### Database Backup
+
 ```bash
 # Automated daily backup
 crontab -e
@@ -437,6 +471,7 @@ psql affiliate_db < /backups/db-20251028.sql
 ## Performance Optimization
 
 ### Backend
+
 1. Enable Redis caching
 2. Add database connection pooling
 3. Implement response compression
@@ -444,6 +479,7 @@ psql affiliate_db < /backups/db-20251028.sql
 5. Enable HTTP/2
 
 ### Frontend
+
 1. Code splitting
 2. Image optimization
 3. Lazy loading
@@ -457,6 +493,7 @@ psql affiliate_db < /backups/db-20251028.sql
 ### Common Issues
 
 **Port already in use**
+
 ```bash
 # Find process
 lsof -i :5000
@@ -466,12 +503,14 @@ kill -9 <PID>
 ```
 
 **Database connection failed**
+
 - Check DATABASE_URL format
 - Verify PostgreSQL is running
 - Check network connectivity
 - Verify credentials
 
 **Prisma migration errors**
+
 ```bash
 # Reset Prisma
 rm -rf node_modules/.prisma
@@ -479,6 +518,7 @@ npx prisma generate
 ```
 
 **JWT token errors**
+
 - Ensure secrets are 32+ characters
 - Check token expiration settings
 - Verify CORS configuration
@@ -488,6 +528,7 @@ npx prisma generate
 ## Support & Maintenance
 
 ### Regular Tasks
+
 - [ ] Weekly: Check logs for errors
 - [ ] Weekly: Review API performance
 - [ ] Monthly: Update dependencies
@@ -499,12 +540,14 @@ npx prisma generate
 ## Scaling Considerations
 
 ### Horizontal Scaling
+
 - Load balancer (Nginx/HAProxy)
 - Multiple backend instances
 - Session storage in Redis
 - Database read replicas
 
 ### Vertical Scaling
+
 - Upgrade server resources
 - Optimize queries
 - Add indexes

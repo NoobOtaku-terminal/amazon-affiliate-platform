@@ -125,7 +125,6 @@ model Product {
   @@index([price])
   @@index([rating])
   @@index([createdAt])
-  @@fulltext([title, description])
   @@map("products")
 }
 

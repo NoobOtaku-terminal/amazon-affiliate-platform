@@ -2,29 +2,30 @@ import nodemailer from 'nodemailer';
 import config from '../config/index.js';
 import logger from '../utils/logger.js';
 
-// Create reusable transporter
-const transporter = nodemailer.createTransporter(config.email.smtp);
+// Create reusable transporter - handle both CommonJS and ES6 module exports
+const createTransporter = nodemailer.createTransport || nodemailer.default?.createTransport || nodemailer.createTransporter;
+const transporter = createTransporter.call(nodemailer.default || nodemailer, config.email.smtp);
 
-// Verify transporter configuration
+// Verify transporter configuration (optional - don't fail on error)
 transporter.verify((error) => {
-  if (error) {
-    logger.error('Email transporter configuration error:', error);
-  } else {
-    logger.info('Email server is ready to send messages');
-  }
+    if (error) {
+        logger.warn('⚠️  Email transporter not configured properly (emails will not be sent):', error.message);
+    } else {
+        logger.info('✅ Email server is ready to send messages');
+    }
 });
 
 /**
  * Send email verification
  */
 export const sendVerificationEmail = async (to, name, token) => {
-  const verificationUrl = `${config.cors.origin}/verify-email?token=${token}`;
+    const verificationUrl = `${config.cors.origin}/verify-email?token=${token}`;
 
-  const mailOptions = {
-    from: config.email.from,
-    to,
-    subject: 'Verify Your Email Address',
-    html: `
+    const mailOptions = {
+        from: config.email.from,
+        to,
+        subject: 'Verify Your Email Address',
+        html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2>Welcome to Amazon Affiliate Hub!</h2>
         <p>Hi ${name},</p>
@@ -42,28 +43,28 @@ export const sendVerificationEmail = async (to, name, token) => {
         <p style="color: #999; font-size: 12px;">This is an automated email, please do not reply.</p>
       </div>
     `,
-  };
+    };
 
-  try {
-    await transporter.sendMail(mailOptions);
-    logger.info(`Verification email sent to ${to}`);
-  } catch (error) {
-    logger.error('Error sending verification email:', error);
-    throw error;
-  }
+    try {
+        await transporter.sendMail(mailOptions);
+        logger.info(`Verification email sent to ${to}`);
+    } catch (error) {
+        logger.error('Error sending verification email:', error);
+        throw error;
+    }
 };
 
 /**
  * Send password reset email
  */
 export const sendPasswordResetEmail = async (to, name, token) => {
-  const resetUrl = `${config.cors.origin}/reset-password?token=${token}`;
+    const resetUrl = `${config.cors.origin}/reset-password?token=${token}`;
 
-  const mailOptions = {
-    from: config.email.from,
-    to,
-    subject: 'Password Reset Request',
-    html: `
+    const mailOptions = {
+        from: config.email.from,
+        to,
+        subject: 'Password Reset Request',
+        html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2>Password Reset Request</h2>
         <p>Hi ${name},</p>
@@ -81,26 +82,26 @@ export const sendPasswordResetEmail = async (to, name, token) => {
         <p style="color: #999; font-size: 12px;">This is an automated email, please do not reply.</p>
       </div>
     `,
-  };
+    };
 
-  try {
-    await transporter.sendMail(mailOptions);
-    logger.info(`Password reset email sent to ${to}`);
-  } catch (error) {
-    logger.error('Error sending password reset email:', error);
-    throw error;
-  }
+    try {
+        await transporter.sendMail(mailOptions);
+        logger.info(`Password reset email sent to ${to}`);
+    } catch (error) {
+        logger.error('Error sending password reset email:', error);
+        throw error;
+    }
 };
 
 /**
  * Send welcome email
  */
 export const sendWelcomeEmail = async (to, name) => {
-  const mailOptions = {
-    from: config.email.from,
-    to,
-    subject: 'Welcome to Amazon Affiliate Hub!',
-    html: `
+    const mailOptions = {
+        from: config.email.from,
+        to,
+        subject: 'Welcome to Amazon Affiliate Hub!',
+        html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2>Welcome Aboard, ${name}!</h2>
         <p>Your email has been successfully verified.</p>
@@ -115,12 +116,12 @@ export const sendWelcomeEmail = async (to, name) => {
         <p style="color: #999; font-size: 12px;">This is an automated email, please do not reply.</p>
       </div>
     `,
-  };
+    };
 
-  try {
-    await transporter.sendMail(mailOptions);
-    logger.info(`Welcome email sent to ${to}`);
-  } catch (error) {
-    logger.error('Error sending welcome email:', error);
-  }
+    try {
+        await transporter.sendMail(mailOptions);
+        logger.info(`Welcome email sent to ${to}`);
+    } catch (error) {
+        logger.error('Error sending welcome email:', error);
+    }
 };

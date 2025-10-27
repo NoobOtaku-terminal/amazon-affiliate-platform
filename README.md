@@ -9,6 +9,7 @@ Enterprise-grade, production-ready Amazon affiliate marketing web application bu
 ## ✨ Features
 
 ### 🎯 Core Functionality
+
 - **Product Display & Filtering**: Advanced search, filter, and sort capabilities
 - **Real-time Deal Updates**: Auto-refresh system for latest deals and price changes
 - **Product Comparison**: Side-by-side comparison of up to 4 products
@@ -19,6 +20,7 @@ Enterprise-grade, production-ready Amazon affiliate marketing web application bu
 - **Responsive Design**: Mobile-first approach with TailwindCSS
 
 ### 🔒 Security Features
+
 - JWT authentication with refresh tokens
 - bcrypt password hashing (12 rounds)
 - Rate limiting & IP throttling
@@ -29,6 +31,7 @@ Enterprise-grade, production-ready Amazon affiliate marketing web application bu
 - SQL injection prevention
 
 ### ⚡ Performance
+
 - Redis caching layer
 - Image lazy loading
 - PWA support
@@ -76,6 +79,7 @@ amazon-affiliate-platform/
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - **React 18+**: UI library
 - **Redux Toolkit**: State management
 - **React Router 6**: Routing
@@ -87,6 +91,7 @@ amazon-affiliate-platform/
 - **React Hook Form + Yup**: Form validation
 
 ### Backend
+
 - **Node.js 18+**: Runtime
 - **Express.js 5**: Web framework
 - **PostgreSQL**: Database
@@ -99,6 +104,7 @@ amazon-affiliate-platform/
 - **Redis**: Caching (optional)
 
 ### DevOps
+
 - **Docker**: Containerization
 - **Nginx**: Reverse proxy
 - **GitHub Actions**: CI/CD
@@ -147,6 +153,7 @@ docker-compose down
 ```
 
 The application will be available at:
+
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:5000
 - Nginx: http://localhost:80
@@ -195,6 +202,7 @@ npm run build
 ## 📊 Database Schema
 
 ### Main Tables
+
 - **users**: User accounts with authentication
 - **products**: Amazon product catalog
 - **deals**: Time-limited deals and discounts
@@ -204,6 +212,7 @@ npm run build
 - **comparisons**: Product comparison history
 
 ### Key Features
+
 - Full-text search indexes
 - Composite indexes for performance
 - Foreign key constraints
@@ -225,6 +234,7 @@ Configure sync interval in `backend/src/jobs/amazonSync.job.js`
 ## 🔐 API Authentication
 
 ### Register
+
 ```bash
 POST /api/auth/register
 {
@@ -235,6 +245,7 @@ POST /api/auth/register
 ```
 
 ### Login
+
 ```bash
 POST /api/auth/login
 {
@@ -244,29 +255,31 @@ POST /api/auth/login
 ```
 
 ### Protected Routes
+
 Include JWT token in Authorization header:
+
 ```bash
 Authorization: Bearer <your_jwt_token>
 ```
 
 ## 📡 API Endpoints
 
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| POST | /api/auth/register | Register new user | ❌ |
-| POST | /api/auth/login | User login | ❌ |
-| POST | /api/auth/refresh | Refresh token | ✅ |
-| GET | /api/products | List all products | ❌ |
-| GET | /api/products/:id | Get product details | ❌ |
-| POST | /api/products | Create product | ✅ Admin |
-| PUT | /api/products/:id | Update product | ✅ Admin |
-| DELETE | /api/products/:id | Delete product | ✅ Admin |
-| GET | /api/deals | Get active deals | ❌ |
-| GET | /api/categories | List categories | ❌ |
-| POST | /api/reviews | Add review | ✅ |
-| GET | /api/reviews/:productId | Get product reviews | ❌ |
-| GET | /api/compare | Compare products | ❌ |
-| POST | /api/sync/amazon | Trigger manual sync | ✅ Admin |
+| Method | Endpoint                | Description         | Auth     |
+| ------ | ----------------------- | ------------------- | -------- |
+| POST   | /api/auth/register      | Register new user   | ❌       |
+| POST   | /api/auth/login         | User login          | ❌       |
+| POST   | /api/auth/refresh       | Refresh token       | ✅       |
+| GET    | /api/products           | List all products   | ❌       |
+| GET    | /api/products/:id       | Get product details | ❌       |
+| POST   | /api/products           | Create product      | ✅ Admin |
+| PUT    | /api/products/:id       | Update product      | ✅ Admin |
+| DELETE | /api/products/:id       | Delete product      | ✅ Admin |
+| GET    | /api/deals              | Get active deals    | ❌       |
+| GET    | /api/categories         | List categories     | ❌       |
+| POST   | /api/reviews            | Add review          | ✅       |
+| GET    | /api/reviews/:productId | Get product reviews | ❌       |
+| GET    | /api/compare            | Compare products    | ❌       |
+| POST   | /api/sync/amazon        | Trigger manual sync | ✅ Admin |
 
 ## 🧪 Testing
 
@@ -304,6 +317,7 @@ Target: **Lighthouse SEO Score ≥ 90**
 ## 🚢 Deployment
 
 ### AWS Deployment
+
 ```bash
 # Build Docker images
 docker-compose build
@@ -315,6 +329,7 @@ aws ecr get-login-password --region us-east-1 | docker login --username AWS --pa
 ```
 
 ### Vercel (Frontend) + Render (Backend)
+
 ```bash
 # Frontend: Connect GitHub to Vercel
 # Backend: Connect GitHub to Render
@@ -340,6 +355,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👨‍💻 Author
 
 **Dheeraj Dhakar**
+
 - GitHub: [@NoobOtaku-terminal](https://github.com/NoobOtaku-terminal)
 - LinkedIn: [Dheeraj Dhakar](https://linkedin.com/in/dheeraj-dhakar)
 
@@ -353,6 +369,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Support
 
 For issues and questions:
+
 - Open an issue on GitHub
 - Email: support@affiliate.com
 

@@ -21,10 +21,10 @@ async function connectDatabase() {
 async function startServer() {
   try {
     await connectDatabase();
-    
+
     // Initialize cron jobs
     initializeCronJobs();
-    
+
     app.listen(PORT, () => {
       logger.info(`🚀 Server running on port ${PORT}`);
       logger.info(`📝 Environment: ${config.env}`);

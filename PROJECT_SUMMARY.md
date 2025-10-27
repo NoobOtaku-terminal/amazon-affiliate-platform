@@ -15,18 +15,20 @@ A **production-ready, enterprise-grade Amazon affiliate marketing platform** bui
 ### 🎯 Key Features Implemented
 
 #### Backend (Node.js + Express.js)
+
 - ✅ **RESTful API Architecture**
   - Authentication endpoints (`/api/auth/*`)
   - Product management endpoints (`/api/products/*`)
   - Health check endpoint
-  
 - ✅ **Database (PostgreSQL + Prisma ORM)**
+
   - Complete schema with 9 models: User, Category, Product, Deal, Review, SavedProduct, Comparison, ComparisonProduct, SyncLog
   - Proper indexes for performance
   - Full-text search capabilities
   - Relationship constraints
 
 - ✅ **Authentication & Security**
+
   - JWT-based authentication (access + refresh tokens)
   - bcrypt password hashing (12 rounds)
   - Email verification system
@@ -39,6 +41,7 @@ A **production-ready, enterprise-grade Amazon affiliate marketing platform** bui
   - Centralized error handling
 
 - ✅ **Product Management**
+
   - CRUD operations
   - Advanced filtering (price, rating, category)
   - Full-text search
@@ -48,6 +51,7 @@ A **production-ready, enterprise-grade Amazon affiliate marketing platform** bui
   - New launches tracking
 
 - ✅ **Amazon API Integration**
+
   - Service layer for Amazon Product Advertising API
   - Product search by keyword
   - Product details by ASIN
@@ -56,6 +60,7 @@ A **production-ready, enterprise-grade Amazon affiliate marketing platform** bui
   - Deals discovery
 
 - ✅ **Auto-Sync Cron Jobs**
+
   - Scheduled product sync (every 6 hours)
   - Price update tracking
   - Deal detection (10%+ discount)
@@ -63,6 +68,7 @@ A **production-ready, enterprise-grade Amazon affiliate marketing platform** bui
   - Sync logging for audit trail
 
 - ✅ **Email Service**
+
   - Verification emails
   - Password reset emails
   - Welcome emails
@@ -76,6 +82,7 @@ A **production-ready, enterprise-grade Amazon affiliate marketing platform** bui
   - Development/Production modes
 
 #### Frontend (React.js)
+
 - ✅ **Project Setup**
   - React 18 with modern hooks
   - TailwindCSS for styling
@@ -84,7 +91,9 @@ A **production-ready, enterprise-grade Amazon affiliate marketing platform** bui
   - SEO-ready HTML structure
 
 #### DevOps & Infrastructure
+
 - ✅ **Docker Configuration**
+
   - Multi-container setup (postgres, redis, backend, frontend, nginx)
   - Health checks
   - Volume persistence
@@ -92,6 +101,7 @@ A **production-ready, enterprise-grade Amazon affiliate marketing platform** bui
   - Production-ready Dockerfiles
 
 - ✅ **CI/CD Pipeline (GitHub Actions)**
+
   - Backend testing with PostgreSQL service
   - Frontend build and test
   - Docker image building
@@ -182,6 +192,7 @@ amazon-affiliate-platform/
 ## 🔧 Tech Stack
 
 ### Backend
+
 - **Runtime**: Node.js 18+
 - **Framework**: Express.js 4.18+
 - **Database**: PostgreSQL 15
@@ -194,6 +205,7 @@ amazon-affiliate-platform/
 - **Caching**: Redis (optional)
 
 ### Frontend
+
 - **Library**: React 18.2
 - **State**: Redux Toolkit 2.0
 - **Routing**: React Router 6+
@@ -204,6 +216,7 @@ amazon-affiliate-platform/
 - **Animations**: Framer Motion
 
 ### DevOps
+
 - **Containerization**: Docker + Docker Compose
 - **Web Server**: Nginx Alpine
 - **CI/CD**: GitHub Actions
@@ -214,6 +227,7 @@ amazon-affiliate-platform/
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 ```bash
 Node.js >= 18.0.0
 PostgreSQL >= 14
@@ -221,12 +235,14 @@ Docker & Docker Compose (optional)
 ```
 
 ### 1. Clone Repository
+
 ```bash
 git clone https://github.com/NoobOtaku-terminal/amazon-affiliate-platform.git
 cd amazon-affiliate-platform
 ```
 
 ### 2. Environment Setup
+
 ```bash
 cp .env.example .env
 cp backend/.env.example backend/.env
@@ -237,6 +253,7 @@ nano backend/.env
 ```
 
 ### 3. Docker Setup (Recommended)
+
 ```bash
 # Start all services
 docker-compose up -d
@@ -251,6 +268,7 @@ docker-compose logs -f
 ```
 
 ### 4. Manual Setup
+
 ```bash
 # Backend
 cd backend
@@ -270,6 +288,7 @@ npm start
 ## 📡 API Endpoints
 
 ### Authentication
+
 - `POST /api/auth/register` - Register new user
 - `POST /api/auth/login` - User login
 - `POST /api/auth/refresh-token` - Refresh access token
@@ -281,6 +300,7 @@ npm start
 - `POST /api/auth/change-password` - Change password (protected)
 
 ### Products
+
 - `GET /api/products` - List all products (with filters)
 - `GET /api/products/:id` - Get product details
 - `GET /api/products/deals` - Get active deals
@@ -290,6 +310,7 @@ npm start
 - `DELETE /api/products/:id` - Delete product (admin only)
 
 ### Query Parameters (Products)
+
 - `page` - Page number (default: 1)
 - `limit` - Items per page (default: 20, max: 100)
 - `category` - Filter by category ID
@@ -304,6 +325,7 @@ npm start
 ## 🔐 Environment Variables
 
 ### Required (Backend)
+
 ```env
 DATABASE_URL=postgresql://user:password@localhost:5432/db_name
 JWT_SECRET=your_secret_min_32_chars
@@ -311,6 +333,7 @@ JWT_REFRESH_SECRET=your_refresh_secret_min_32_chars
 ```
 
 ### Optional (Backend)
+
 ```env
 PORT=5000
 NODE_ENV=development
@@ -336,13 +359,14 @@ REDIS_ENABLED=false
 ✅ SQL injection prevention (Prisma ORM)  
 ✅ XSS protection  
 ✅ CSRF tokens ready  
-✅ Environment variable validation  
+✅ Environment variable validation
 
 ---
 
 ## 📊 Database Schema
 
 ### Main Tables
+
 1. **users** - User accounts and authentication
 2. **categories** - Product categorization (hierarchical)
 3. **products** - Amazon product catalog
@@ -354,6 +378,7 @@ REDIS_ENABLED=false
 9. **sync_logs** - Amazon API sync audit trail
 
 ### Key Features
+
 - Full-text search indexes on product title/description
 - Composite indexes for query optimization
 - Foreign key constraints for data integrity
@@ -365,6 +390,7 @@ REDIS_ENABLED=false
 ## 🔄 Auto-Sync System
 
 ### Sync Job (Every 6 hours)
+
 - Fetches latest product data from Amazon
 - Updates prices and stock status
 - Detects price drops (creates deals for 10%+ discount)
@@ -372,12 +398,15 @@ REDIS_ENABLED=false
 - Logs all changes in sync_logs table
 
 ### Cleanup Job (Daily at midnight)
+
 - Marks expired deals as inactive
 - Updates product isDeal flags
 - Maintains data consistency
 
 ### Configuration
+
 Edit `backend/.env`:
+
 ```env
 SYNC_CRON_SCHEDULE=0 */6 * * *     # Every 6 hours
 CLEANUP_CRON_SCHEDULE=0 0 * * *    # Daily at midnight
@@ -390,7 +419,9 @@ CLEANUP_CRON_SCHEDULE=0 0 * * *    # Daily at midnight
 While the core infrastructure is complete, here are recommended next steps:
 
 ### Backend (Remaining)
+
 1. **Additional API Endpoints**
+
    - Categories CRUD
    - Reviews CRUD
    - Comparison system
@@ -398,6 +429,7 @@ While the core infrastructure is complete, here are recommended next steps:
    - Admin dashboard analytics
 
 2. **Amazon API**
+
    - Implement actual PA-API 5.0 calls
    - Add AWS SDK integration
    - Implement request signing
@@ -409,7 +441,9 @@ While the core infrastructure is complete, here are recommended next steps:
    - Mock Amazon API responses
 
 ### Frontend (Full Implementation Needed)
+
 1. **Pages**
+
    - Home page with trending products
    - Category pages
    - Product detail page
@@ -419,11 +453,13 @@ While the core infrastructure is complete, here are recommended next steps:
    - Admin panel
 
 2. **State Management**
+
    - Redux slices for auth, products, cart
    - API integration with React Query
    - Persistent storage
 
 3. **Components**
+
    - Product cards
    - Filters and sorting
    - Search bar
@@ -438,6 +474,7 @@ While the core infrastructure is complete, here are recommended next steps:
    - Meta tag management
 
 ### DevOps
+
 1. **Production Deployment**
    - SSL certificates setup
    - Domain configuration
@@ -498,6 +535,7 @@ Specialized in React.js, Node.js, and Full-Stack Development
 ## 📞 Support
 
 For issues, questions, or contributions:
+
 - **GitHub Issues**: [Create an issue](https://github.com/NoobOtaku-terminal/amazon-affiliate-platform/issues)
 - **Repository**: https://github.com/NoobOtaku-terminal/amazon-affiliate-platform
 
@@ -507,7 +545,7 @@ For issues, questions, or contributions:
 
 **Current Phase**: Core Infrastructure Complete ✅  
 **Production Ready**: Backend API & Database ✅  
-**Next Phase**: Frontend Development & Advanced Features  
+**Next Phase**: Frontend Development & Advanced Features
 
 ---
 
