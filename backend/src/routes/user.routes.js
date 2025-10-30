@@ -10,11 +10,12 @@ const router = express.Router();
 router.post(
     '/comparisons',
     authenticate,
-    validate([
+    [
         body('productIds')
             .isArray({ min: 2, max: 4 })
             .withMessage('Must provide 2-4 product IDs'),
-    ]),
+    ],
+    validate,
     comparisonController.createComparison
 );
 
@@ -22,14 +23,16 @@ router.get('/comparisons', authenticate, comparisonController.getMyComparisons);
 
 router.get(
     '/comparisons/:id',
-    validate([param('id').isUUID()]),
+    [param('id').isUUID()],
+    validate,
     comparisonController.getComparison
 );
 
 router.delete(
     '/comparisons/:id',
     authenticate,
-    validate([param('id').isUUID()]),
+    [param('id').isUUID()],
+    validate,
     comparisonController.deleteComparison
 );
 
@@ -37,7 +40,8 @@ router.delete(
 router.post(
     '/saved',
     authenticate,
-    validate([body('productId').notEmpty().isUUID()]),
+    [body('productId').notEmpty().isUUID()],
+    validate,
     savedProductController.saveProduct
 );
 
@@ -46,14 +50,16 @@ router.get('/saved', authenticate, savedProductController.getSavedProducts);
 router.delete(
     '/saved/:productId',
     authenticate,
-    validate([param('productId').isUUID()]),
+    [param('productId').isUUID()],
+    validate,
     savedProductController.removeSavedProduct
 );
 
 router.get(
     '/saved/check/:productId',
     authenticate,
-    validate([param('productId').isUUID()]),
+    [param('productId').isUUID()],
+    validate,
     savedProductController.checkSaved
 );
 

@@ -16,13 +16,13 @@ const router = express.Router();
  * Public Routes
  */
 // Get all deals
-router.get('/', validate(getDealsValidation), dealController.getDeals);
+router.get('/', getDealsValidation, validate, dealController.getDeals);
 
 // Get hot deals
 router.get('/hot', dealController.getHotDeals);
 
 // Get deal by ID
-router.get('/:id', validate(getDealValidation), dealController.getDeal);
+router.get('/:id', getDealValidation, validate, dealController.getDeal);
 
 /**
  * Protected Routes (Admin Only)
@@ -32,7 +32,8 @@ router.post(
     '/',
     authenticate,
     authorize('ADMIN'),
-    validate(createDealValidation),
+    createDealValidation,
+    validate,
     dealController.createDeal
 );
 
@@ -41,7 +42,8 @@ router.put(
     '/:id',
     authenticate,
     authorize('ADMIN'),
-    validate(updateDealValidation),
+    updateDealValidation,
+    validate,
     dealController.updateDeal
 );
 
@@ -50,7 +52,8 @@ router.delete(
     '/:id',
     authenticate,
     authorize('ADMIN'),
-    validate(deleteDealValidation),
+    deleteDealValidation,
+    validate,
     dealController.deleteDeal
 );
 

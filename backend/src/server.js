@@ -1,10 +1,22 @@
+console.log('🔄 Starting server initialization...');
+
 import app from './app.js';
+console.log('✅ App module imported');
+
 import config from './config/index.js';
+console.log('✅ Config module imported');
+
 import logger from './utils/logger.js';
+console.log('✅ Logger module imported');
+
 import prisma from './config/database.js';
+console.log('✅ Database module imported');
+
 import { initializeCronJobs } from './jobs/amazonSync.job.js';
+console.log('✅ Cron jobs module imported');
 
 const PORT = config.port;
+console.log(`📍 Port configured: ${PORT}`);
 
 // Test database connection
 async function connectDatabase() {
@@ -20,17 +32,25 @@ async function connectDatabase() {
 // Start server
 async function startServer() {
   try {
+    console.log('🔄 Starting server function...');
+
+    console.log('🔄 Connecting to database...');
     await connectDatabase();
+    console.log('✅ Database connection completed');
 
-    // Initialize cron jobs
+    console.log('🔄 Initializing cron jobs...');
     initializeCronJobs();
+    console.log('✅ Cron jobs initialized');
 
+    console.log('🔄 Starting HTTP server...');
     app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
       logger.info(`🚀 Server running on port ${PORT}`);
       logger.info(`📝 Environment: ${config.env}`);
       logger.info(`🔗 Health check: http://localhost:${PORT}/health`);
     });
   } catch (error) {
+    console.error('❌ Failed to start server:', error);
     logger.error('Failed to start server:', error);
     process.exit(1);
   }

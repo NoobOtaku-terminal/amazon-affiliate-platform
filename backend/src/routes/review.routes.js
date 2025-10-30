@@ -17,10 +17,10 @@ const router = express.Router();
  * Public Routes
  */
 // Get product reviews
-router.get('/product', validate(getProductReviewsValidation), reviewController.getProductReviews);
+router.get('/product', getProductReviewsValidation, validate, reviewController.getProductReviews);
 
 // Get review by ID
-router.get('/:id', validate(getReviewValidation), reviewController.getReview);
+router.get('/:id', getReviewValidation, validate, reviewController.getReview);
 
 /**
  * Protected Routes (Authenticated Users)
@@ -29,7 +29,8 @@ router.get('/:id', validate(getReviewValidation), reviewController.getReview);
 router.post(
     '/',
     authenticate,
-    validate(createReviewValidation),
+    createReviewValidation,
+    validate,
     reviewController.createReview
 );
 
@@ -40,7 +41,8 @@ router.get('/user/my-reviews', authenticate, reviewController.getMyReviews);
 router.put(
     '/:id',
     authenticate,
-    validate(updateReviewValidation),
+    updateReviewValidation,
+    validate,
     reviewController.updateReview
 );
 
@@ -48,14 +50,16 @@ router.put(
 router.delete(
     '/:id',
     authenticate,
-    validate(deleteReviewValidation),
+    deleteReviewValidation,
+    validate,
     reviewController.deleteReview
 );
 
 // Mark review as helpful
 router.post(
     '/:id/helpful',
-    validate(markHelpfulValidation),
+    markHelpfulValidation,
+    validate,
     reviewController.markHelpful
 );
 
